@@ -10,12 +10,11 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '30 10 * * 1-6'
-
 jobs:
   test:
-
+    
     runs-on: macos-10.15
-
+    
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -28,4 +27,6 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Run scraper
+      env:
+        WEBHOOK: ${{ secrets.WEBHOOK }}
       run: ruby scraper.rb

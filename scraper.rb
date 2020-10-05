@@ -12,7 +12,9 @@ Capybara.run_server = false
 Capybara.current_driver = :selenium_headless
 Capybara.app_host = 'http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279'
 Capybara.default_max_wait_time = 10
+
 module Scraper
+  # Handles scaping
   class Express
     include Capybara::DSL
     def fetch_menu
@@ -22,6 +24,7 @@ module Scraper
   end
 end
 
+# Hanles the majority of functionality
 class App
   def initialize(url, channel = '#lunch-menu')
     @channel = channel
@@ -29,7 +32,7 @@ class App
     @data = []
   end
 
-  def get_menu
+  def menu
     t = Scraper::Express.new
     t.fetch_menu.each do |element|
       day = element.find('h2').text(:all)
@@ -42,12 +45,13 @@ class App
   end
 
   def post_todays_menu
-    get_menu
+    menu
     @data.each do |day|
       return command_bot_to_speak(day[:menu]) if day[:day] == current_day
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def command_bot_to_speak(data)
     str = "Dagens meny \nExpress: #{data[0]} \nExpress Vegan: #{data[1]}"
     data = {
@@ -72,6 +76,7 @@ class App
     response = https.request(request)
     response.code
   end
+  # rubocop:enable Metrics/MethodLength
 
   def current_day
     x = DateTime.new
@@ -82,4 +87,4 @@ class App
 end
 
 x = App.new(ENV['WEBHOOK'])
-x.post_todays_menu
+p x.post_todays_menu

@@ -77,24 +77,3 @@ end
 
 x = App.new
 puts x.post_todays_menu()
-# self.find('.dish-name')
-
-
-# require 'capybara/dsl'
-
-
-
-
-# # Module My 
-# #     include Capybara::DSL
-
-
-# #     # visit('/')
-
-# # end
-
-# Capybara.current_driver = :selenium
-
-# Capybara.app_host = url
-
-# Capybara.run_server = false

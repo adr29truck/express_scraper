@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'capybara'
 require 'capybara/dsl'
@@ -26,50 +28,53 @@ class App
     @data = []
   end
 
-  def get_menu()
+  def get_menu
     t = Scraper::Express.new
-    storage = []
     t.fetch_menu.each do |element|
         day = element.find('h2').text(:all)
         food = []
         element.find_all('.dish .dish-name').each do |dish|
             food << dish.text(:all)
         end
-        @data << {menu: food, day: day}
+      @data << { menu: food, day: day }
       end
   end
 
-  def post_todays_menu()
-    get_menu()
+  def post_todays_menu
+    get_menu
     @data.each do |day| 
-      return command_bot_to_speak(day[:menu]) if day[:day] == current_day() 
+      return command_bot_to_speak(day[:menu]) if day[:day] == current_day
     end
   end
 
   def command_bot_to_speak(data)
-    str = "På Express serveras det idag \nExpress: #{data[0]} \nExpress Vegan: #{data[1]}"
+    str = "Dagens meny \nExpress: #{data[0]} \nExpress Vegan: #{data[1]}"
     data = {
       "channel": @channel,
       "blocks": [
         {
-          "type": "section",
+          "type": 'section',
           "text": {
-            "type": "mrkwn",
+            "type": 'mrkdwn',
             "text": str
           }
         }
       ]
     }
     
-    header = {'Content-Type': 'text/json'}
+    header = { 'Content-Type': 'text/json' }
     
-    http = Net::HTTP.new(@webhook_uri)
-    return str
+    https = Net::HTTP.new(@webhook_uri.host, @webhook_uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Post.new(@webhook_uri.request_uri, header)
+    request.body = data.to_json
+    response = https.request(request)
+    response.code
   end
 
   def current_day
     x = DateTime.new
-    days = {'1': 'Måndag', '2': 'Tisdag', '3': 'Onsdag', '4': 'Torsdag', '5': 'Fredag'}
+    days = { '1': 'Måndag', '2': 'Tisdag', '3': 'Onsdag', '4': 'Torsdag', '5': 'Fredag' }
     temp = x.day.to_s.to_sym
     days[temp]
   end

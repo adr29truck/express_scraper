@@ -86,5 +86,12 @@ class App
   end
 end
 
-x = App.new(ENV['WEBHOOK'])
-p x.post_todays_menu
+require 'sinatra'
+
+# Webserver handler
+class Server < Sinatra::Base
+  post '/send_menu' do
+    x = App.new(ENV['WEBHOOK'])
+    p x.post_todays_menu
+  end
+end

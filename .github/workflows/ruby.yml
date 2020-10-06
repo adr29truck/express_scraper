@@ -9,7 +9,7 @@ name: Send lunch menu
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '58 8 * * 1-5'
+    - cron:  '05 9 * * 1-5'
 jobs:
   test:
     
@@ -17,8 +17,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: master
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):

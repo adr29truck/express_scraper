@@ -53,7 +53,7 @@ class App
 
   # rubocop:disable Metrics/MethodLength
   def command_bot_to_speak(data)
-    str = "Dagens meny \nExpress: #{data[0]} \nExpress Vegan: #{data[1]}"
+    str = "Idag #{current_day} \nExpress: #{data[0]} \nExpress Vegan: #{data[1]}"
     data = {
       "channel": @channel,
       "blocks": [

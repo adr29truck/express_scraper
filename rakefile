@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rake'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec) 
+RSpec::Core::RakeTask.new(:spec)
 
-task :default => :test
-
+task default: :test
 
 task :run do
-  system("rackup rerun")
+  system('rackup rerun')
 end
 
+# These are yet to be actually implemented
 task :test do
   Rake::Task['acceptance'].invoke
 
@@ -26,19 +28,13 @@ task :acceptance do
   system("bundle exec 'ruby ./spec/acceptance/admin_page_spec.rb'")
 end
 
-task :unit => :spec
-
+task unit: :spec
 
 def get_tests_sorted(test_folder_path)
   tests = Dir.glob(test_folder_path).sort_by do |a|
-            basename = File.basename(a)
-            splitted = basename.split("_")
-            splitted.first.to_i
-          end
+    basename = File.basename(a)
+    splitted = basename.split('_')
+    splitted.first.to_i
+  end
   tests
 end
-
-# task :tester do
-  
-#   :spec
-# end

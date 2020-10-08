@@ -6,7 +6,6 @@ Bundler.require
 
 require_relative 'scraper'
 
-
 # Security settings
 use Rack::Protection
 use Rack::Protection::StrictTransport

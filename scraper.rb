@@ -9,9 +9,19 @@ require 'dotenv'
 
 Dotenv.load
 Capybara.run_server = false
-Capybara.current_driver = :selenium_headless
+Capybara.current_driver = :selenium_chrome_headless_docker_friendly
 Capybara.app_host = 'http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279'
-Capybara.default_max_wait_time = 10
+Capybara.default_max_wait_time = 100
+
+Capybara.register_driver :selenium_chrome_headless_docker_friendly do |app|
+  Capybara::Selenium::Driver.load_selenium
+  browser_options = ::Selenium::WebDriver::Chrome::Options.new
+  browser_options.args << '--headless'
+  browser_options.args << '--disable-gpu'
+  # Sandbox cannot be used inside unprivileged Docker container
+  browser_options.args << '--no-sandbox'
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+end
 
 module Scraper
   # Handles scaping
@@ -79,9 +89,10 @@ class App
   # rubocop:enable Metrics/MethodLength
 
   def current_day
-    x = DateTime.new
+    uri = URI('https://worldtimeapi.org/api/timezone/Europe/Amsterdam')
+    time = JSON.parse(Net::HTTP.get(uri))
     days = { '1': 'Måndag', '2': 'Tisdag', '3': 'Onsdag', '4': 'Torsdag', '5': 'Fredag' }
-    temp = x.day.to_s.to_sym
+    temp = time['day_of_week'].to_s.to_sym
     days[temp]
   end
 end
@@ -93,5 +104,6 @@ class Server < Sinatra::Base
   post '/send_menu' do
     x = App.new(ENV['WEBHOOK'])
     p x.post_todays_menu
+    return 'OK'
   end
 end

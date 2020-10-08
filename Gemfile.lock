@@ -46,6 +46,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   dotenv
+  nokogiri (= 1.10.1)
   selenium-webdriver
   sinatra
 

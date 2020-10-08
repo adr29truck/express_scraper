@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'capybara'
-gem 'selenium-webdriver'
 gem 'dotenv'
+gem 'nokogiri', '1.10.1'
+gem 'selenium-webdriver'
 gem 'sinatra'

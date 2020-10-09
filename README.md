@@ -1,5 +1,7 @@
 # Express Scraper
 
+[![CodeFactor](https://www.codefactor.io/repository/github/adr29truck/express_scraper/badge)](https://www.codefactor.io/repository/github/adr29truck/express_scraper)
+
 ## Table of Contents
 
 - [About](#about)

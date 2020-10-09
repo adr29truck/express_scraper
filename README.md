@@ -1,7 +1,11 @@
 # Express Scraper
-
+Dev<br>
+![RuboCopLintDev](https://github.com/adr29truck/express_scraper/workflows/RuboCop/badge.svg?branch=dev)
+![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/CI/badge.svg?branch=dev)
 [![CodeFactor](https://www.codefactor.io/repository/github/adr29truck/express_scraper/badge)](https://www.codefactor.io/repository/github/adr29truck/express_scraper)
-
+<br>Main<br>
+![RuboCopLintMain](https://github.com/adr29truck/express_scraper/workflows/RuboCop/badge.svg?branch=main)
+![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/CI/badge.svg?branch=main)
 ## Table of Contents
 
 - [About](#about)

@@ -10,5 +10,5 @@ gem 'sinatra'
 
 gem 'minitest'
 gem 'minitest-reporters'
-gem 'rake'
+gem 'rake', '>= 12.3.3'
 gem 'rspec'

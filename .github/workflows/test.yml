@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
 
-jobs:    
-  testing:  
+jobs:
+  testing:
     runs-on: ubuntu-latest
     steps:
     - name: Getting files from GitHub

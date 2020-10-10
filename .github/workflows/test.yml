@@ -21,4 +21,4 @@ jobs:
     - name: Test with Rake
       run: |
         bundle install --jobs 4 --retry 3
-        rake test
+        bundle exec rake -t

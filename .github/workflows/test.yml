@@ -19,5 +19,6 @@ jobs:
         ruby -v
     - name: Test with Rake
       run: |
+        bundle update --bundler
         bundle install --jobs 4 --retry 3
         rake test

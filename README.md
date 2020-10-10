@@ -1,11 +1,13 @@
 # Express Scraper
 Dev<br>
 ![RuboCopLintDev](https://github.com/adr29truck/express_scraper/workflows/RuboCop/badge.svg?branch=dev)
-![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/CI/badge.svg?branch=dev)
+![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/Docker/badge.svg?branch=dev)
+![UnitTests](https://github.com/adr29truck/express_scraper/workflows/Tests/badge.svg?branch=dev)
 [![CodeFactor](https://www.codefactor.io/repository/github/adr29truck/express_scraper/badge)](https://www.codefactor.io/repository/github/adr29truck/express_scraper)
 <br>Main<br>
 ![RuboCopLintMain](https://github.com/adr29truck/express_scraper/workflows/RuboCop/badge.svg?branch=main)
-![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/CI/badge.svg?branch=main)
+![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/Docker/badge.svg?branch=main)
+![UnitTests](https://github.com/adr29truck/express_scraper/workflows/Tests/badge.svg?branch=main)
 ## Table of Contents
 
 - [About](#about)
@@ -24,21 +26,23 @@ These instructions will get you a copy of the project up and running on your loc
 
 To get upp and running clone the repository and install all the dependencies using ``` bundle install ```
 Then create a .env file containing the webhook link ``` WEBHOOK = https://... ```
-You will also need to have google chrome installed on your device and a supported ChromeDriver. Easely install the ChromeDriver from <a href="https://chromedriver.chromium.org/downloads">chromedriver.chromium.org/downloads</a>
+You will also need to have google chrome installed on your device and a supported ChromeDriver. Easily install the ChromeDriver from <a href="https://chromedriver.chromium.org/downloads">chromedriver.chromium.org/downloads</a>
 
-You are now set and ready to run ``` ruby scraper.rb ``` or ``` rackup ``` in the terminal. Then navigate to ``` http://localhost:REPLACE_WITH_PORT_GIVEN_WHEN STARTING_THE_SERVER/send_menu ``` to trigger the webscraping event.
+You are now set and ready to run ``` rackup ``` in the terminal. Then navigate to ``` http://localhost:REPLACE_WITH_PORT_GIVEN_WHEN_STARTING_THE_SERVER/send_menu ``` to trigger the webscraping event.
 
 ### Using docker
 
-To get the current container from master run <br>
-```$ docker pull adr29truck/expressscraper:latest ```
+To get the current container from main run <br>
+```$ docker pull adr29truck/expressscraper:latest ```<br>
+or for the current dev container <br>
+```$ docker pull adr29truck/expressscraper:dev ```<br>
 Or build it manually by first cloning this repo.
 
 To run the container you can use the following command <br>
-``` $ docker run --rm --tty -d --p 9000:4244 -e PORT=4244 -e RACK_ENV=production -e WEBHOOK=REPLACE_WITH_WEBHOOK_URL --name expressscraper expressscraper:latest ```
+``` $ docker run --rm --tty -d --p 9000:4244 -e PORT=4244 -e RACK_ENV=production -e WEBHOOK=REPLACE_WITH_WEBHOOK_URL --name expressscraper expressscraper:REPLACE_WITH_TAG ```
 
-## Deploying to heroku
+## Manually deploying to heroku
 To deploy the dockercontainer to Heroku use the following commands <br>
-``` $ docker tag expressscraper:latest registry.heroku.com/express-scraper/web ``` <br>
-``` $ docker push registry.heroku.com/express-scraper/web ``` <br>
-``` $ heroku container:release web -a express-scraper```
+``` $ docker tag expressscraper:latest registry.heroku.com/APP_NAMEr/web ``` <br>
+``` $ docker push registry.heroku.com/APP_NAMer/web ``` <br>
+``` $ heroku container:release web -a APP_NAME```

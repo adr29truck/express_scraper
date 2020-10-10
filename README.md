@@ -8,6 +8,7 @@ Dev<br>
 ![RuboCopLintMain](https://github.com/adr29truck/express_scraper/workflows/RuboCop/badge.svg?branch=main)
 ![DockerHubPush](https://github.com/adr29truck/express_scraper/workflows/Docker/badge.svg?branch=main)
 ![UnitTests](https://github.com/adr29truck/express_scraper/workflows/Tests/badge.svg?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/adr29truck/express_scraper/badge/main)](https://www.codefactor.io/repository/github/adr29truck/express_scraper/overview/main)
 ## Table of Contents
 
 - [About](#about)

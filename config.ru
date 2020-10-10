@@ -4,7 +4,11 @@ require 'bundler'
 
 Bundler.require
 
-require_relative 'scraper'
+require_relative 'server'
+
+Dir['modules/**/*.rb'].each do |file|
+  require_relative file
+end
 
 # Security settings
 use Rack::Protection

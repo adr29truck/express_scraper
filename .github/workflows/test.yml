@@ -11,14 +11,14 @@ jobs:
     - name: Getting files from GitHub
       uses: actions/checkout@v1
     - name: Configuring Ruby 2.6
-      uses: actions/setup-ruby@master
+      uses: ruby/setup-ruby@v1.47.0
       with:
-        ruby-version: 2.6.x
+        bundler-cache: true
+        ruby-version: 2.6
     - name: Checking Ruby version
       run: |
         ruby -v
     - name: Test with Rake
       run: |
-        bundle update --bundler
         bundle install --jobs 4 --retry 3
         rake test

@@ -33,7 +33,7 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
 
           # Dokerfile name. Optional, by default will be set to "Dockerfile".
-          dockerfile_name: Dockerfile
+          dockerfile_name: dockerfile
 
           # Additional options of docker build command. (Optional)
           docker_options: "--no-cache"

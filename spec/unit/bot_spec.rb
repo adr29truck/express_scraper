@@ -19,6 +19,12 @@ RSpec.describe 'Bot:' do
         type: 'section'
       }],
                          channel: '#lunch-menu' }
+      error_return_message = { blocks: [{
+          type: 'image',
+          image_url: 'http://placekitten.com/500/500',
+          alt_text: 'O Boy! Something went wrong!'
+        }]
+      }
 
       expect(Bot.new('webhook').parse_message([{ type: 'Express', dish: 'Pasta Pizza' },
                                                { type: 'Express2', dish: 'Soup' }])).to eq return_message

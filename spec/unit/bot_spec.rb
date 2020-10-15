@@ -12,18 +12,39 @@ RSpec.describe 'Bot:' do
 
     it 'the bot message parser should parse a valid message' do
       return_message = { blocks: [{
-        text: {
-          text: "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup",
-          type: 'mrkdwn'
-        },
-        type: 'section'
-      }],
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": "Idag Unable to fetch current day\nExpress: Pasta Pizza\nExpress2: Soup"
+			}
+		}
+        ],
                          channel: '#lunch-menu' }
-      error_return_message = { blocks: [{
-          type: 'image',
-          image_url: 'http://placekitten.com/500/500',
-          alt_text: 'O Boy! Something went wrong!'
-        }]
+      error_return_message = { blocks:  [
+		{
+			"type": "image",
+			"image_url": "https://www.reactiongifs.com/r/whapc.gif",
+			"alt_text": "Something is broken"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Something went wrong."
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Create issue on GitHub",
+					"emoji": true
+				},
+				"value": "click_me_123",
+				"url": "https://github.com/adr29truck/express_scraper",
+				"action_id": "button-action"
+			}
+		}
+	]
       }
 
       expect(Bot.new('webhook').parse_message([{ type: 'Express', dish: 'Pasta Pizza' },

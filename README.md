@@ -45,5 +45,5 @@ To run the container you can use the following command <br>
 ## Manually deploying to heroku
 To deploy the dockercontainer to Heroku use the following commands <br>
 ``` $ docker tag expressscraper:latest registry.heroku.com/APP_NAMEr/web ``` <br>
-``` $ docker push registry.heroku.com/APP_NAMer/web ``` <br>
+``` $ docker push registry.heroku.com/APP_NAME/web ``` <br>
 ``` $ heroku container:release web -a APP_NAME```

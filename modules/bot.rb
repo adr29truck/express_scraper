@@ -22,19 +22,48 @@ class Bot
     'Found no match'
   end
 
+  # rubocop:disable Metrics/MethodLength
   def parse_message(data)
+    raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
+
     { "channel": @channel,
       "blocks": [{
         "type": 'section',
         "text": {
-          "type": 'mrkdwn',
+          "type": 'plain_text',
           "text": "Idag #{Time.day_of_week} \n#{data[0][:type]}: #{data[0][:dish]}" \
             "\n#{data[1][:type]}: #{data[1][:dish]}"
         }
       }] }
+  rescue StandardError
+    { "channel": @channel,
+      "blocks": [
+        {
+          "type": 'image',
+          "image_url": 'https://www.reactiongifs.com/r/whapc.gif',
+          "alt_text": 'Something is broken'
+        },
+        {
+          "type": 'section',
+          "text": {
+            "type": 'mrkdwn',
+            "text": 'Something went wrong.'
+          },
+          "accessory": {
+            "type": 'button',
+            "text": {
+              "type": 'plain_text',
+              "text": 'Create issue on GitHub',
+              "emoji": true
+            },
+            "value": 'click_me_123',
+            "url": 'https://github.com/adr29truck/express_scraper',
+            "action_id": 'button-action'
+          }
+        }
+      ] }
   end
 
-  # rubocop:disable Metrics/MethodLength
   def command_bot_to_speak(data)
     header = { 'Content-Type': 'text/json' }
 

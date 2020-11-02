@@ -32,6 +32,7 @@ class Bot
     end
 
     { "channel": @channel,
+      "text": text.chomp,
       "blocks": [{
         "type": 'section',
         "text": {

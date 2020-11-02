@@ -19,6 +19,7 @@ RSpec.describe 'Bot:' do
                              "text": "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup"
                            }
                          }], channel: '#lunch-menu' }
+
       error_return_message = { blocks: [
         {
           "type": 'image',

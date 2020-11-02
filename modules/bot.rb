@@ -26,13 +26,18 @@ class Bot
   def parse_message(data)
     raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
 
+    text = "Idag #{Time.day_of_week} \n"
+    data.each do |e|
+      text += "#{e[:type]}: #{e[:dish]}\n"
+    end
+
     { "channel": @channel,
+      "text": text.chomp,
       "blocks": [{
         "type": 'section',
         "text": {
           "type": 'plain_text',
-          "text": "Idag #{Time.day_of_week} \n#{data[0][:type]}: #{data[0][:dish]}" \
-            "\n#{data[1][:type]}: #{data[1][:dish]}"
+          "text": text.chomp
         }
       }] }
   rescue StandardError

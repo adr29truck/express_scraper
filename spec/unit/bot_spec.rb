@@ -11,13 +11,15 @@ RSpec.describe 'Bot:' do
     end
 
     it 'the bot message parser should parse a valid message' do
-      return_message = { blocks: [{
-        "type": 'section',
-        "text": {
-          "type": 'plain_text',
-          "text": "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup"
-        }
-      }], channel: '#lunch-menu' }
+      return_message = { text: "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup",
+                         blocks: [{
+                           "type": 'section',
+                           "text": {
+                             "type": 'plain_text',
+                             "text": "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup"
+                           }
+                         }], channel: '#lunch-menu' }
+
       error_return_message = { blocks: [
         {
           "type": 'image',

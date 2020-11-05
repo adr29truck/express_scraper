@@ -16,30 +16,40 @@ class Bot
 
   def post_todays_menu
     x = Menu.new('http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279')
-    x.menu.each do |day|
+    x.express_menu.each do |day|
       return command_bot_to_speak parse_message(day[:menu]) if day[:day] == Time.day_of_week
     end
     'Found no match'
   end
 
+  def get_restaurant_menu
+    m = Menu.new("https://chalmerskonferens.se/sv/lunchmenyer-johanneberg/")
+    parse_message m.restaurant_menu
+  end
+
   # rubocop:disable Metrics/MethodLength
   def parse_message(data)
     raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
+    if data[0][:dish] == "Stängt. Lunch serveras i Kårrestaurangen"
+      get_restaurant_menu
+    else
 
-    text = "Idag #{Time.day_of_week} \n"
-    data.each do |e|
-      text += "#{e[:type]}: #{e[:dish]}\n"
+      text = "Idag #{Time.day_of_week} \n"
+      data.each do |e|
+        text += "#{e[:type]}: #{e[:dish]}\n"
+      end
+  
+      { "channel": @channel,
+        "text": text.chomp,
+        "blocks": [{
+          "type": 'section',
+          "text": {
+            "type": 'plain_text',
+            "text": text.chomp
+          }
+        }] }
     end
 
-    { "channel": @channel,
-      "text": text.chomp,
-      "blocks": [{
-        "type": 'section',
-        "text": {
-          "type": 'plain_text',
-          "text": text.chomp
-        }
-      }] }
   rescue StandardError
     { "channel": @channel,
       "blocks": [

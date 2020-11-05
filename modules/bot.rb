@@ -8,38 +8,67 @@ Dotenv.load
 
 # Hanles the majority of the bot functionality
 class Bot
+  # rubocop:disable Metrics/MethodLength
   def initialize(webook_url, channel = '#lunch-menu')
     @channel = channel
     @webhook_uri = URI(webook_url)
     @data = []
+    @urls = [
+      { url: 'http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279',
+        name: 'Express' },
+      { url: 'http://carbonatescreen.azurewebsites.net/menu/week/karrestaurangen/21f31565-5c2b-4b47-d2a1-08d558129279',
+        name: 'Kårrestaurangen' }
+    ]
+    @attempt = 1
+    @closed_message = 'Stängt. Lunch serveras i Kårrestaurangen'
   end
+  # rubocop:enable Metrics/MethodLength
 
   def post_todays_menu
-    x = Menu.new('http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279')
+    x = Menu.new(@urls.first[:url])
     x.menu.each do |day|
       return command_bot_to_speak parse_message(day[:menu]) if day[:day] == Time.day_of_week
     end
     'Found no match'
+  rescue StandardError
+    'Found no match'
+  end
+
+  def get_alternative_restaurant_menu(entity, pre_text)
+    @attempt += 1
+    m = Menu.new(entity[:url])
+    pre_text += "\n*#{entity[:name]}*"
+    m.menu.each do |day|
+      return parse_message(day[:menu], pre_text) if day[:day] == Time.day_of_week
+    end
   end
 
   # rubocop:disable Metrics/MethodLength
-  def parse_message(data)
+  # rubocop:disable Metrics/AbcSize
+  def parse_message(data, pre_text = '')
     raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
 
-    text = "Idag #{Time.day_of_week} \n"
-    data.each do |e|
-      text += "#{e[:type]}: #{e[:dish]}\n"
-    end
+    if data.first[:dish] == @closed_message
+      if @urls.length > @attempt
+        get_alternative_restaurant_menu(@urls[@attempt], "#{data[0][:type]}: #{@closed_message}")
+      end
+    else
+      text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp + "\n"
 
-    { "channel": @channel,
-      "text": text.chomp,
-      "blocks": [{
-        "type": 'section',
-        "text": {
-          "type": 'plain_text',
-          "text": text.chomp
-        }
-      }] }
+      data.each do |e|
+        text += "#{e[:type]}: #{e[:dish]}\n"
+      end
+
+      { "channel": @channel,
+        "text": text.chomp.gsub('*', ''),
+        "blocks": [{
+          "type": 'section',
+          "text": {
+            "type": 'mrkdwn',
+            "text": text.chomp
+          }
+        }] }
+    end
   rescue StandardError
     { "channel": @channel,
       "blocks": [
@@ -90,5 +119,6 @@ class Bot
       'Unable to send webhook'
     end
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 end

@@ -4,6 +4,7 @@ require 'net/http'
 require 'uri'
 
 # Handles time logic
+# rubocop:disable Naming/VariableNumber
 class Time
   def self.day_of_week
     retries ||= 0
@@ -17,3 +18,5 @@ class Time
     'Unable to fetch current day'
   end
 end
+
+# rubocop:enable Naming/VariableNumber

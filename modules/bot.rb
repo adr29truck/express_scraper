@@ -22,7 +22,7 @@ class Bot
     'Found no match'
   end
 
-  def get_restaurant_menu
+  def fetch_restaurant_menu
     m = Menu.new('https://chalmerskonferens.se/sv/lunchmenyer-johanneberg/')
     parse_message m.restaurant_menu
   end

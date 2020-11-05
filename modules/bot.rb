@@ -53,7 +53,8 @@ class Bot
         get_alternative_restaurant_menu(@urls[@attempt], "#{data[0][:type]}: #{@closed_message}")
       end
     else
-      text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp + "\n"
+      text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp
+      text += "\n"
 
       data.each do |e|
         text += "#{e[:type]}: #{e[:dish]}\n"

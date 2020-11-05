@@ -23,14 +23,15 @@ class Bot
   end
 
   def get_restaurant_menu
-    m = Menu.new("https://chalmerskonferens.se/sv/lunchmenyer-johanneberg/")
+    m = Menu.new('https://chalmerskonferens.se/sv/lunchmenyer-johanneberg/')
     parse_message m.restaurant_menu
   end
 
   # rubocop:disable Metrics/MethodLength
   def parse_message(data)
     raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
-    if data[0][:dish] == "Stängt. Lunch serveras i Kårrestaurangen"
+
+    if data[0][:dish] == 'Stängt. Lunch serveras i Kårrestaurangen'
       get_restaurant_menu
     else
 
@@ -38,7 +39,7 @@ class Bot
       data.each do |e|
         text += "#{e[:type]}: #{e[:dish]}\n"
       end
-  
+
       { "channel": @channel,
         "text": text.chomp,
         "blocks": [{
@@ -49,7 +50,6 @@ class Bot
           }
         }] }
     end
-
   rescue StandardError
     { "channel": @channel,
       "blocks": [

@@ -15,8 +15,8 @@ RSpec.describe 'Bot:' do
                          blocks: [{
                            "type": 'section',
                            "text": {
-                             "type": 'plain_text',
-                             "text": "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup"
+                             "type": 'mrkdwn',
+                             "text": "*Idag Unable to fetch current day* \nExpress: Pasta Pizza\nExpress2: Soup"
                            }
                          }], channel: '#lunch-menu' }
 

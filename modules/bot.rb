@@ -29,9 +29,9 @@ class Bot
     x.menu.each do |day|
       return command_bot_to_speak parse_message(day[:menu]) if day[:day] == Time.day_of_week
     end
-    'Found no match'
+    raise 'Found no match'
   rescue StandardError
-    'Found no match'
+    command_bot_to_speak parse_message({})
   end
 
   def get_alternative_restaurant_menu(entity, pre_text)
@@ -50,7 +50,7 @@ class Bot
 
     if data.first[:dish] == @closed_message || data.first[:dish] == ''
       if @urls.length > @attempt
-        get_alternative_restaurant_menu(@urls[@attempt], "#{data[0][:type]}: #{data.first[:dish] == '' ? 'Null Value': @closed_message}")
+        get_alternative_restaurant_menu(@urls[@attempt], "#{data[0][:type]}: #{data.first[:dish] == '' ? 'Null Value' : @closed_message}")
       end
     else
       text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp

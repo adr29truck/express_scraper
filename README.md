@@ -40,10 +40,10 @@ or for the current dev container <br>
 Or build it manually by first cloning this repo.
 
 To run the container you can use the following command <br>
-``` $ docker run --rm --tty -d --p 9000:4244 -e PORT=4244 -e RACK_ENV=production -e WEBHOOK=REPLACE_WITH_WEBHOOK_URL --name expressscraper expressscraper:REPLACE_WITH_TAG ```
+``` $ docker run --rm --tty -d -p 9000:4244 -e PORT=4244 -e RACK_ENV=production -e WEBHOOK=REPLACE_WITH_WEBHOOK_URL --name expressscraper expressscraper:REPLACE_WITH_TAG ```
 
 ## Manually deploying to heroku
 To deploy the dockercontainer to Heroku use the following commands <br>
-``` $ docker tag expressscraper:latest registry.heroku.com/APP_NAMEr/web ``` <br>
+``` $ docker tag expressscraper:latest registry.heroku.com/APP_NAME/web ``` <br>
 ``` $ docker push registry.heroku.com/APP_NAME/web ``` <br>
 ``` $ heroku container:release web -a APP_NAME```

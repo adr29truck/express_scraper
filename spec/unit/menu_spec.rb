@@ -12,7 +12,7 @@ RSpec.describe 'Menu:' do
     end
 
     it 'The menu tries to scrape, but since there is no url provided it returns a "error"' do
-      expect(Menu.new('url').menu).to eq 'Unable to fetch menu'
+      expect(Menu.new('url').menu).to eq [{ day: 'undefined', menu: [{ dish: 'undefined', type: 'undefined' }] }]
     end
   end
 end

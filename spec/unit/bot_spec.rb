@@ -20,7 +20,7 @@ RSpec.describe 'Bot:' do
                            }
                          }], channel: '#lunch-menu' }
 
-      error_return_message = { blocks: [
+      error_message = { blocks: [
         {
           "type": 'image',
           "image_url": 'https://www.reactiongifs.com/r/whapc.gif',
@@ -46,11 +46,22 @@ RSpec.describe 'Bot:' do
         }
       ], channel: '#lunch-menu' }
 
+      error_return_message = { blocks: [
+        {
+          text: {
+            text: "*Idag Unable to fetch current day* \n: \nExpress2: Soup",
+            type: 'mrkdwn'
+          },
+          type: 'section'
+        }
+      ], channel: '#lunch-menu',
+      text: "Idag Unable to fetch current day \n: \nExpress2: Soup" }
+
       expect(Bot.new('webhook').parse_message([{ type: 'Express', dish: 'Pasta Pizza' },
                                                { type: 'Express2', dish: 'Soup' }])).to eq return_message
       expect(Bot.new('webhook').parse_message([{ type: nil, dish: nil },
                                                { type: 'Express2', dish: 'Soup' }])).to eq error_return_message
-      expect(Bot.new('webhook').parse_message({ type: 'Express2', dish: 'Soup' })).to eq error_return_message
+      expect(Bot.new('webhook').parse_message({ type: 'Express2', dish: 'Soup' })).to eq error_message
     end
   end
   # rubocop:enable Metrics/BlockLength

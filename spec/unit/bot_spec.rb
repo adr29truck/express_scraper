@@ -13,35 +13,35 @@ RSpec.describe 'Bot:' do
     it 'the bot message parser should parse a valid message' do
       return_message = { text: "Idag Unable to fetch current day \nExpress: Pasta Pizza\nExpress2: Soup",
                          blocks: [{
-                           "type": 'section',
-                           "text": {
-                             "type": 'mrkdwn',
-                             "text": "*Idag Unable to fetch current day* \nExpress: Pasta Pizza\nExpress2: Soup"
+                           type: 'section',
+                           text: {
+                             type: 'mrkdwn',
+                             text: "*Idag Unable to fetch current day* \nExpress: Pasta Pizza\nExpress2: Soup"
                            }
                          }], channel: '#lunch-menu' }
 
       error_message = { blocks: [
         {
-          "type": 'image',
-          "image_url": 'https://www.reactiongifs.com/r/whapc.gif',
-          "alt_text": 'Something is broken'
+          type: 'image',
+          image_url: 'https://www.reactiongifs.com/r/whapc.gif',
+          alt_text: 'Something is broken'
         },
         {
-          "type": 'section',
-          "text": {
-            "type": 'mrkdwn',
-            "text": 'Something went wrong.'
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'Something went wrong.'
           },
-          "accessory": {
-            "type": 'button',
-            "text": {
-              "type": 'plain_text',
-              "text": 'Create issue on GitHub',
-              "emoji": true
+          accessory: {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Create issue on GitHub',
+              emoji: true
             },
-            "value": 'click_me_123',
-            "url": 'https://github.com/adr29truck/express_scraper',
-            "action_id": 'button-action'
+            value: 'click_me_123',
+            url: 'https://github.com/adr29truck/express_scraper',
+            action_id: 'button-action'
           }
         }
       ], channel: '#lunch-menu' }
@@ -55,7 +55,7 @@ RSpec.describe 'Bot:' do
           type: 'section'
         }
       ], channel: '#lunch-menu',
-      text: "Idag Unable to fetch current day \n: \nExpress2: Soup" }
+                               text: "Idag Unable to fetch current day \n: \nExpress2: Soup" }
 
       expect(Bot.new('webhook').parse_message([{ type: 'Express', dish: 'Pasta Pizza' },
                                                { type: 'Express2', dish: 'Soup' }])).to eq return_message

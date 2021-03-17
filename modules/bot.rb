@@ -45,12 +45,17 @@ class Bot
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def parse_message(data, pre_text = '')
     if data.first.nil? || data.first[:dish] == @closed_message || data.first[:dish] == 'undefined'
       if @urls.length > @attempt
         return get_alternative_restaurant_menu(@urls[@attempt], 'Received a nil value') if data.first.nil?
 
-        get_alternative_restaurant_menu(@urls[@attempt], "#{data.first[:type]}: #{data.first[:dish] == '' ? 'Null Value' : @closed_message}")
+        get_alternative_restaurant_menu(
+          @urls[@attempt],
+          "#{data.first[:type]}: #{data.first[:dish] == '' ? 'Null Value' : @closed_message}"
+        )
       end
     else
       text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp
@@ -60,44 +65,46 @@ class Bot
         text += "#{e[:type]}: #{e[:dish]}\n"
       end
 
-      { "channel": @channel,
-        "text": text.chomp.gsub('*', ''),
-        "blocks": [{
-          "type": 'section',
-          "text": {
-            "type": 'mrkdwn',
-            "text": text.chomp
+      { channel: @channel,
+        text: text.chomp.gsub('*', ''),
+        blocks: [{
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: text.chomp
           }
         }] }
     end
   rescue StandardError
-    { "channel": @channel,
-      "blocks": [
+    { channel: @channel,
+      blocks: [
         {
-          "type": 'image',
-          "image_url": 'https://www.reactiongifs.com/r/whapc.gif',
-          "alt_text": 'Something is broken'
+          type: 'image',
+          image_url: 'https://www.reactiongifs.com/r/whapc.gif',
+          alt_text: 'Something is broken'
         },
         {
-          "type": 'section',
-          "text": {
-            "type": 'mrkdwn',
-            "text": 'Something went wrong.'
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'Something went wrong.'
           },
-          "accessory": {
-            "type": 'button',
-            "text": {
-              "type": 'plain_text',
-              "text": 'Create issue on GitHub',
-              "emoji": true
+          accessory: {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Create issue on GitHub',
+              emoji: true
             },
-            "value": 'click_me_123',
-            "url": 'https://github.com/adr29truck/express_scraper',
-            "action_id": 'button-action'
+            value: 'click_me_123',
+            url: 'https://github.com/adr29truck/express_scraper',
+            action_id: 'button-action'
           }
         }
       ] }
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity:
 
   def command_bot_to_speak(data)
     header = { 'Content-Type': 'text/json' }

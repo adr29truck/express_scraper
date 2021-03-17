@@ -13,5 +13,3 @@ AllCops:
 
 Metrics/ClassLength:
     Max: 200
-Naming/VariableNumber:
-    CheckSymbols: false

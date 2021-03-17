@@ -5,7 +5,7 @@ on:
     branches: main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       # Check-out your repository.
@@ -26,3 +26,14 @@ jobs:
           docker_options: "--no-cache"
           process_type: web
 
+  versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}   # checkout the correct branch name
+          fetch-depth: 0                # fetch the whole repo history
+
+      - name: Git Version
+        uses: codacy/git-version@2.2.0

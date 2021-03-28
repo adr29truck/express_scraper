@@ -44,12 +44,11 @@ jobs:
   description:
     runs-on: ubuntu-latest
     steps:
-      -
-        uses: actions/checkout@v2
-      -
-        name: Update repo description
-        uses: peter-evans/dockerhub-description@v2.4.1
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-          DOCKERHUB_REPOSITORY: adr29truck/expressscraper
+      - uses: actions/checkout@v2
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2.4.2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: adr29truck/expressscraper
+          readme-filepath: ./README.md

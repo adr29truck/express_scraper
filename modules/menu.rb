@@ -15,7 +15,7 @@ class Menu
     data = []
     Scraper::Generic.new(@url).find_all('.swedish-menu .week-day').each do |element|
       food = []
-      element.find_all('.dish').each do |x|
+      element.find_all('.dish', minimum: 1).each do |x|
         food << { type: x.find('.dish-type').text(:all),
                   dish: x.find('.dish-name').text(:all) }
       end
@@ -24,7 +24,8 @@ class Menu
     data
   rescue StandardError
     retry if (retries += 1) < 3
-    'Unable to fetch menu'
+    data << { menu: [{ type: 'undefined', dish: 'undefined' }], day: 'undefined' }
+    data
   end
   # rubocop:enable Metrics/MethodLength
 end

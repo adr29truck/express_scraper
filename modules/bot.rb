@@ -8,66 +8,103 @@ Dotenv.load
 
 # Hanles the majority of the bot functionality
 class Bot
+  # rubocop:disable Metrics/MethodLength
   def initialize(webook_url, channel = '#lunch-menu')
     @channel = channel
     @webhook_uri = URI(webook_url)
     @data = []
+    @urls = [
+      { url: 'http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279',
+        name: 'Express' },
+      { url: 'http://carbonatescreen.azurewebsites.net/menu/week/karrestaurangen/21f31565-5c2b-4b47-d2a1-08d558129279',
+        name: 'Kårrestaurangen' }
+    ]
+    @attempt = 1
+    @closed_message = 'Stängt. Lunch serveras i Kårrestaurangen'
   end
+  # rubocop:enable Metrics/MethodLength
 
   def post_todays_menu
-    x = Menu.new('http://carbonatescreen.azurewebsites.net/menu/week/johanneberg-express/3d519481-1667-4cad-d2a3-08d558129279')
+    x = Menu.new(@urls.first[:url])
     x.menu.each do |day|
       return command_bot_to_speak parse_message(day[:menu]) if day[:day] == Time.day_of_week
     end
-    'Found no match'
+    raise 'Found no match'
+  rescue StandardError
+    command_bot_to_speak parse_message({})
+  end
+
+  def get_alternative_restaurant_menu(entity, pre_text)
+    @attempt += 1
+    m = Menu.new(entity[:url])
+    pre_text += "\n*#{entity[:name]}*"
+    m.menu.each do |day|
+      return parse_message(day[:menu], pre_text) if day[:day] == Time.day_of_week
+    end
   end
 
   # rubocop:disable Metrics/MethodLength
-  def parse_message(data)
-    raise 'Wrong data' if data[0][:type].nil? || data[0][:dish].nil?
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def parse_message(data, pre_text = '')
+    if data.first.nil? || data.first[:dish] == @closed_message || data.first[:dish] == 'undefined'
+      if @urls.length > @attempt
+        return get_alternative_restaurant_menu(@urls[@attempt], 'Received a nil value') if data.first.nil?
 
-    text = "Idag #{Time.day_of_week} \n"
-    data.each do |e|
-      text += "#{e[:type]}: #{e[:dish]}\n"
+        get_alternative_restaurant_menu(
+          @urls[@attempt],
+          "#{data.first[:type]}: #{data.first[:dish] == '' ? 'Null Value' : @closed_message}"
+        )
+      end
+    else
+      text = "*Idag #{Time.day_of_week}* \n#{pre_text.chomp}".chomp
+      text += "\n"
+
+      data.each do |e|
+        text += "#{e[:type]}: #{e[:dish]}\n"
+      end
+
+      { channel: @channel,
+        text: text.chomp.gsub('*', ''),
+        blocks: [{
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: text.chomp
+          }
+        }] }
     end
-
-    { "channel": @channel,
-      "text": text.chomp,
-      "blocks": [{
-        "type": 'section',
-        "text": {
-          "type": 'plain_text',
-          "text": text.chomp
-        }
-      }] }
   rescue StandardError
-    { "channel": @channel,
-      "blocks": [
+    { channel: @channel,
+      blocks: [
         {
-          "type": 'image',
-          "image_url": 'https://www.reactiongifs.com/r/whapc.gif',
-          "alt_text": 'Something is broken'
+          type: 'image',
+          image_url: 'https://www.reactiongifs.com/r/whapc.gif',
+          alt_text: 'Something is broken'
         },
         {
-          "type": 'section',
-          "text": {
-            "type": 'mrkdwn',
-            "text": 'Something went wrong.'
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'Something went wrong.'
           },
-          "accessory": {
-            "type": 'button',
-            "text": {
-              "type": 'plain_text',
-              "text": 'Create issue on GitHub',
-              "emoji": true
+          accessory: {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Create issue on GitHub',
+              emoji: true
             },
-            "value": 'click_me_123',
-            "url": 'https://github.com/adr29truck/express_scraper',
-            "action_id": 'button-action'
+            value: 'click_me_123',
+            url: 'https://github.com/adr29truck/express_scraper',
+            action_id: 'button-action'
           }
         }
       ] }
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity:
 
   def command_bot_to_speak(data)
     header = { 'Content-Type': 'text/json' }
@@ -90,5 +127,6 @@ class Bot
       'Unable to send webhook'
     end
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 end

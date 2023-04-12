@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'capybara'
 gem 'dotenv'
-gem 'nokogiri', '1.13.4'
+gem 'nokogiri', '1.14.3'
 gem 'selenium-webdriver'
 gem 'sinatra'
 
